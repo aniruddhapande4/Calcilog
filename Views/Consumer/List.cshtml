@@ -1,0 +1,42 @@
+@model List<CalciLog.Models.Consumer>
+@{
+    ViewData["Title"] = "Consumer List";
+}
+
+@section Scripts {
+    <script>
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                alert('@TempData["Message"]');
+            </text>
+        }
+    </script>
+}
+<h2>All Consumers</h2>
+
+<form method="get">
+    <input name="search" value="@ViewBag.Search" placeholder="Search by name..." />
+    <button type="submit">Search</button>
+</form>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Calculation Records</th>
+    </tr>
+@foreach (var c in Model)
+{
+    <tr>
+        <td>@c.Name</td>
+        <td>
+            <ul>
+            @foreach (var r in c.Records)
+            {
+                <li>@r.Timestamp: @r.Expression = <b>@r.Result</b></li>
+            }
+            </ul>
+        </td>
+    </tr>
+}
+</table>

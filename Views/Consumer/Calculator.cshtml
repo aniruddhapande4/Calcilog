@@ -1,0 +1,73 @@
+@{
+    ViewBag.Title = "Calculator";
+    var consumer = ViewBag.Consumer;
+}
+
+<h2>Calculator for @consumer.Name</h2>
+
+<form asp-action="Calculator" method="post">
+    <input type="hidden" name="consumerId" value="@consumer.Id" />
+
+    <input type="text" id="display" name="expression" readonly class="form-control mb-2" />
+
+    <div class="calculator-buttons">
+        <div>
+            <button type="button" onclick="append('7')">7</button>
+            <button type="button" onclick="append('8')">8</button>
+            <button type="button" onclick="append('9')">9</button>
+            <button type="button" onclick="append('/')">/</button>
+        </div>
+        <div>
+            <button type="button" onclick="append('4')">4</button>
+            <button type="button" onclick="append('5')">5</button>
+            <button type="button" onclick="append('6')">6</button>
+            <button type="button" onclick="append('*')">*</button>
+        </div>
+        <div>
+            <button type="button" onclick="append('1')">1</button>
+            <button type="button" onclick="append('2')">2</button>
+            <button type="button" onclick="append('3')">3</button>
+            <button type="button" onclick="append('-')">-</button>
+        </div>
+        <div>
+            <button type="button" onclick="append('0')">0</button>
+            <button type="button" onclick="append('.')">.</button>
+            <button type="button" onclick="clearDisplay()">C</button>
+            <button type="button" onclick="append('+')">+</button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Calculate</button>
+</form>
+
+<script>
+    function append(char) {
+        document.getElementById("display").value += char;
+    }
+
+    function clearDisplay() {
+        document.getElementById("display").value = "";
+    }
+</script>
+
+<style>
+    .calculator-buttons div {
+        margin-bottom: 5px;
+    }
+    .calculator-buttons button {
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                alert('@TempData["Message"]');
+            </text>
+        }
+    </script>
+}
