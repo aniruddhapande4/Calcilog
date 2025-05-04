@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CalciLog")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+feb9b4361ac1f22d403fd84718cf836e7c7fa7fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+975bb66729782f6589ab05711e1ee1275f030c61")]
 [assembly: System.Reflection.AssemblyProductAttribute("CalciLog")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CalciLog")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
