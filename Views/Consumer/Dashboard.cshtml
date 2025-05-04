@@ -1,9 +1,153 @@
 @{
     ViewData["Title"] = "Dashboard";
 }
-<h2>Dashboard</h2>
-<ul>
-    <li><a href="/Consumer/Add">➕ Add Consumer</a></li>
-    <li><a href="/Consumer/List">📋 View Consumers</a></li>
-    <li><a href="/Account/Logout">🚪 Logout</a></li>
-</ul>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dashboard-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .dashboard-title {
+        color: #2d3748;
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #667eea;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .crud-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        background: white;
+        border-radius: 10px;
+        color: #2d3748;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .action-icon {
+        font-size: 1.5rem;
+    }
+
+    .action-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .logout-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        margin-top: 30px;
+        background: #fed7d7;
+        color: #e53e3e;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+        background: #feb2b2;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        
+        .dashboard-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Dashboard</h1>
+        @if (User?.Identity?.IsAuthenticated == true)
+        {
+            <div class="user-info">
+                <div class="user-avatar">
+                    @User.Identity.Name?.Substring(0,1).ToUpper()
+                </div>
+                <span>Welcome, @User.Identity.Name</span>
+            </div>
+        }
+    </div>
+
+    <div class="crud-actions">
+        <a href="/Consumer/Add" class="action-btn">
+            <span class="action-icon">➕</span>
+            <span class="action-text">Add New Consumer</span>
+        </a>
+        <a href="/Consumer/List" class="action-btn">
+            <span class="action-icon">📋</span>
+            <span class="action-text">View All Consumers</span>
+        </a>
+        <a href="/Consumer/Search" class="action-btn">
+            <span class="action-icon">🔍</span>
+            <span class="action-text">Search Consumers</span>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="/Account/Logout" class="logout-btn">
+            <span>Logout</span>
+        </a>
+    </div>
+</div>

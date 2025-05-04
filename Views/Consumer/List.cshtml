@@ -3,40 +3,284 @@
     ViewData["Title"] = "Consumer List";
 }
 
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .page-container {
+        position: relative;
+        padding: 60px 20px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 15px;
+        background: #e2e8f0;
+        color: #4a5568;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .back-button:hover {
+        background: #cbd5e0;
+        color: #2d3748;
+    }
+
+    h2 {
+        color: #2d3748;
+        margin-bottom: 20px;
+    }
+
+    .view-toggle {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .view-btn {
+        padding: 8px 16px;
+        background: #e2e8f0;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .view-btn.active {
+        background: #667eea;
+        color: white;
+    }
+
+    .view-btn:hover {
+        background: #cbd5e0;
+    }
+
+    .view-btn.active:hover {
+        background: #5a67d8;
+    }
+
+    .search-form {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-form input {
+        padding: 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        min-width: 300px;
+    }
+
+    .search-form button {
+        padding: 10px 20px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .search-form button:hover {
+        background: #5a67d8;
+    }
+
+    /* List View Styles */
+    .list-view {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .list-view th, .list-view td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .list-view th {
+        background: #f8fafc;
+        font-weight: 600;
+        color: #4a5568;
+    }
+
+    .list-view tr:hover {
+        background: #f8fafc;
+    }
+
+    /* Card View Styles */
+    .card-view {
+        display: none;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .consumer-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .consumer-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #2d3748;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .record-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #f8fafc;
+        border-radius: 6px;
+    }
+
+    .record-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .record-expr {
+        color: #4a5568;
+    }
+
+    .record-result {
+        font-weight: bold;
+        color: #667eea;
+    }
+
+    @@media (max-width: 768px) {
+        .card-view {
+            grid-template-columns: 1fr;
+        }
+        
+        .search-form input {
+            min-width: auto;
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <a href="/Consumer/Dashboard" class="back-button">
+        <span>←</span>
+        <span>Dashboard</span>
+    </a>
+    
+    <h2>All Consumers</h2>
+    
+    <div class="view-toggle">
+        <button class="view-btn active" id="listBtn">List View</button>
+        <button class="view-btn" id="cardBtn">Card View</button>
+    </div>
+
+    <form method="get" class="search-form">
+        <input name="search" value="@ViewBag.Search" placeholder="Search by name..." />
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- List View -->
+    <table class="list-view" id="listView">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Calculation Records</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                    @foreach (var r in c.Records)
+                    {
+                        <li style="margin-bottom: 8px; padding: 8px; background: #f8fafc; border-radius: 4px;">
+                            <span style="color: #718096;">@r.Timestamp.ToString("g")</span><br>
+                            <span class="record-expr">@r.Expression</span> = 
+                            <span class="record-result">@r.Result</span>
+                        </li>
+                    }
+                    </ul>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <!-- Card View -->
+    <div class="card-view" id="cardView">
+        @foreach (var c in Model)
+        {
+            <div class="consumer-card">
+                <div class="card-header">@c.Name</div>
+                <div class="card-body">
+                    @foreach (var r in c.Records)
+                    {
+                        <div class="record-item">
+                            <div style="color: #718096; font-size: 0.9rem;">@r.Timestamp.ToString("g")</div>
+                            <div>
+                                <span class="record-expr">@r.Expression</span> = 
+                                <span class="record-result">@r.Result</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
 @section Scripts {
     <script>
+        // Toggle between list and card views
+        document.getElementById('listBtn').addEventListener('click', function() {
+            document.getElementById('listView').style.display = 'table';
+            document.getElementById('cardView').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('cardBtn').classList.remove('active');
+        });
+
+        document.getElementById('cardBtn').addEventListener('click', function() {
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('cardView').style.display = 'grid';
+            this.classList.add('active');
+            document.getElementById('listBtn').classList.remove('active');
+        });
+
+        // Show alert if there's a TempData message
         @if (TempData["Message"] != null)
         {
             <text>
-                alert('@TempData["Message"]');
+                alert('@Html.Raw(TempData["Message"])');
             </text>
         }
     </script>
 }
-<h2>All Consumers</h2>
-
-<form method="get">
-    <input name="search" value="@ViewBag.Search" placeholder="Search by name..." />
-    <button type="submit">Search</button>
-</form>
-
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Name</th>
-        <th>Calculation Records</th>
-    </tr>
-@foreach (var c in Model)
-{
-    <tr>
-        <td>@c.Name</td>
-        <td>
-            <ul>
-            @foreach (var r in c.Records)
-            {
-                <li>@r.Timestamp: @r.Expression = <b>@r.Result</b></li>
-            }
-            </ul>
-        </td>
-    </tr>
-}
-</table>

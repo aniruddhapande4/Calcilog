@@ -1,11 +1,211 @@
 @{
     ViewData["Title"] = "Login";
 }
-<h2>Login</h2>
-<form method="post">
-    <input name="username" placeholder="Username" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
-<p style="color:red">@ViewBag.Error</p>
-<a href="/Account/Signup">Don't have an account? Signup</a>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        overflow: hidden; /* Prevent scrolling */
+    }
+
+    .content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+        max-width: 1200px;
+        width: 100%;
+    }
+
+    .login-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        transition: transform 0.3s ease;
+        z-index: 1;
+    }
+
+    .login-container:hover {
+        transform: translateY(-5px);
+    }
+
+    button {
+        background: #667eea;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #764ba2;
+    }
+
+    .content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 100px; /* Increased from 60px to 100px for more space */
+        max-width: 1200px;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .illustration {
+        max-width: 500px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .illustration img {
+    width: 80%; /* Reduce from 100% */
+    height: auto;
+    max-height: 500px; /* Reduced from 500px */
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.15));
+    animation: float 6s ease-in-out infinite;
+    border-radius: 12px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+
+    .illustration img:hover {
+        transform: scale(1.02); /* Slight zoom on hover */
+        filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+    }
+
+    @@keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+    }
+
+    /* Rest of your existing styles... */
+    h2 {
+        color: #2d3748;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2em;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    input {
+        padding: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+        width: 100%;
+    }
+
+    .error-message {
+        color: #e53e3e;
+        background: #fed7d7;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .signup-link {
+        text-align: center;
+        margin-top: 20px;
+        color: #4a5568;
+    }
+
+    .signup-link a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .signup-link a:hover {
+        color: #764ba2;
+    }
+
+    @@media (max-width: 1024px) {
+        .content-wrapper {
+            gap: 60px; /* Slightly less space on tablets */
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .content-wrapper {
+            flex-direction: column;
+            gap: 50px; /* Vertical gap when stacked */
+        }
+        
+        .illustration {
+            max-width: 350px; /* Smaller image on mobile */
+            padding: 0;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .content-wrapper {
+            gap: 40px;
+        }
+        
+        .illustration img {
+            max-height: 300px;
+        }
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="login-container">
+        <h2>Welcome Back</h2>
+        <form method="post">
+            <input name="username" placeholder="Username" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Sign In</button>
+        </form>
+        
+        @if (ViewBag.Error != null)
+        {
+            <p class="error-message">@ViewBag.Error</p>
+        }
+
+        <p class="signup-link">
+            Don't have an account? <br>
+            <a href="/Account/Signup">Create Account</a>
+        </p>
+    </div>
+
+    <div class="illustration">
+        <!-- Replace with your actual image path -->
+        <img src="~/images/Khatabook-removebg-preview.png" alt="Login Illustration">
+    </div>
+</div>
