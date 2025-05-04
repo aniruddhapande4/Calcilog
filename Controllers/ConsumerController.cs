@@ -94,14 +94,43 @@ namespace CalciLog.Controllers
         public IActionResult List(string search)
         {
             var consumers = string.IsNullOrWhiteSpace(search)
-                ? _context.Consumers.Include(c => c.Records).ToList()
-                : _context.Consumers
-                    .Where(c => c.Name.Contains(search))
+                ? _context.Consumers
                     .Include(c => c.Records)
+                    .Where(c => c.Records.Any()) // Only consumers with records
+                    .ToList()
+                : _context.Consumers
+                    .Include(c => c.Records)
+                    .Where(c => c.Name.Contains(search) && c.Records.Any()) // Apply search + check records
                     .ToList();
 
             ViewBag.Search = search;
             return View(consumers);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteRecord(int recordId)
+        {
+            var record = _context.CalculationRecords.FirstOrDefault(r => r.Id == recordId);
+            if (record != null)
+            {
+                _context.CalculationRecords.Remove(record);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public IActionResult EditRecord(int recordId, string newExpression)
+        {
+            var record = _context.CalculationRecords.FirstOrDefault(r => r.Id == recordId);
+            if (record != null)
+            {
+                var result = new System.Data.DataTable().Compute(newExpression, null);
+                record.Expression = newExpression;
+                record.Result = result.ToString();
+                _context.SaveChanges();
+            }
+            return RedirectToAction("List");
         }
     }
 }
