@@ -3,42 +3,190 @@
     var consumer = ViewBag.Consumer;
 }
 
-<h2>Calculator for @consumer.Name</h2>
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
 
-<form asp-action="Calculator" method="post">
-    <input type="hidden" name="consumerId" value="@consumer.Id" />
+    .page-container {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 60px 20px 20px;
+    }
 
-    <input type="text" id="display" name="expression" readonly class="form-control mb-2" />
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 15px;
+        background: #e2e8f0;
+        color: #4a5568;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
 
-    <div class="calculator-buttons">
-        <div>
-            <button type="button" onclick="append('7')">7</button>
-            <button type="button" onclick="append('8')">8</button>
-            <button type="button" onclick="append('9')">9</button>
-            <button type="button" onclick="append('/')">/</button>
-        </div>
-        <div>
-            <button type="button" onclick="append('4')">4</button>
-            <button type="button" onclick="append('5')">5</button>
-            <button type="button" onclick="append('6')">6</button>
-            <button type="button" onclick="append('*')">*</button>
-        </div>
-        <div>
-            <button type="button" onclick="append('1')">1</button>
-            <button type="button" onclick="append('2')">2</button>
-            <button type="button" onclick="append('3')">3</button>
-            <button type="button" onclick="append('-')">-</button>
-        </div>
-        <div>
-            <button type="button" onclick="append('0')">0</button>
-            <button type="button" onclick="append('.')">.</button>
-            <button type="button" onclick="clearDisplay()">C</button>
-            <button type="button" onclick="append('+')">+</button>
-        </div>
+    .back-button:hover {
+        background: #cbd5e0;
+        color: #2d3748;
+    }
+
+    h2 {
+        color: #2d3748;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .calculator-container {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    #display {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.5rem;
+        text-align: right;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        background: #f8fafc;
+    }
+
+    .calculator-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .calculator-buttons button {
+        padding: 15px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 10px;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .calculator-buttons button:hover {
+        background: #e2e8f0;
+        transform: translateY(-2px);
+    }
+
+    .calculator-buttons button:active {
+        transform: translateY(0);
+    }
+
+    .calculator-buttons button[onclick*="append('+')"],
+    .calculator-buttons button[onclick*="append('-')"],
+    .calculator-buttons button[onclick*="append('*')"],
+    .calculator-buttons button[onclick*="append('/')"] {
+        background: #667eea;
+        color: white;
+    }
+
+    .calculator-buttons button[onclick*="append('+')"]:hover,
+    .calculator-buttons button[onclick*="append('-')"]:hover,
+    .calculator-buttons button[onclick*="append('*')"]:hover,
+    .calculator-buttons button[onclick*="append('/')"]:hover {
+        background: #5a67d8;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        background: #48bb78;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+        background: #38a169;
+    }
+
+    button[onclick="clearDisplay()"] {
+        background: #fed7d7;
+        color: #e53e3e;
+    }
+
+    button[onclick="clearDisplay()"]:hover {
+        background: #feb2b2;
+    }
+
+    @@media (max-width: 500px) {
+        .page-container {
+            padding: 60px 15px 15px;
+        }
+        
+        .calculator-container {
+            padding: 20px;
+        }
+        
+        .calculator-buttons button {
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <a href="/Consumer/List" class="back-button">
+        <span>←</span>
+        <span>Back</span>
+    </a>
+
+    <div class="calculator-container">
+        <h2>Calculator for @consumer.Name</h2>
+        
+        <form asp-action="Calculator" method="post">
+            <input type="hidden" name="consumerId" value="@consumer.Id" />
+            
+            <input type="text" id="display" name="expression" readonly class="form-control mb-2" />
+            
+            <div class="calculator-buttons">
+                <button type="button" onclick="append('7')">7</button>
+                <button type="button" onclick="append('8')">8</button>
+                <button type="button" onclick="append('9')">9</button>
+                <button type="button" onclick="append('/')">/</button>
+                
+                <button type="button" onclick="append('4')">4</button>
+                <button type="button" onclick="append('5')">5</button>
+                <button type="button" onclick="append('6')">6</button>
+                <button type="button" onclick="append('*')">*</button>
+                
+                <button type="button" onclick="append('1')">1</button>
+                <button type="button" onclick="append('2')">2</button>
+                <button type="button" onclick="append('3')">3</button>
+                <button type="button" onclick="append('-')">-</button>
+                
+                <button type="button" onclick="append('0')">0</button>
+                <button type="button" onclick="append('.')">.</button>
+                <button type="button" onclick="clearDisplay()">C</button>
+                <button type="button" onclick="append('+')">+</button>
+            </div>
+            
+            <button type="submit">Calculate</button>
+        </form>
     </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Calculate</button>
-</form>
+</div>
 
 <script>
     function append(char) {
@@ -50,23 +198,12 @@
     }
 </script>
 
-<style>
-    .calculator-buttons div {
-        margin-bottom: 5px;
-    }
-    .calculator-buttons button {
-        width: 40px;
-        height: 40px;
-        margin-right: 5px;
-    }
-</style>
-
 @section Scripts {
     <script>
         @if (TempData["Message"] != null)
         {
             <text>
-                alert('@TempData["Message"]');
+                alert('@Html.Raw(TempData["Message"])');
             </text>
         }
     </script>
